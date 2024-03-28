@@ -1,13 +1,14 @@
 #!/usr/bin/python3
 """
-This module contains the function that displays the
-stats from the standard input
+This module contains the function that displays
+stats from the standard input.
 """
+import re
 from sys import stdin
 
 
 def status_printer(total_size, status):
-    """A method to print the status with the format given"""
+    """A method to print the status with the format given."""
     print('File size: {}'.format(total_size))
     for code, count in sorted(status.items()):
         if count > 0:
@@ -15,30 +16,29 @@ def status_printer(total_size, status):
 
 
 def main():
-    """Main method"""
+    """Main method."""
     status_codes = {'200': 0, '301': 0, '400': 0,
                     '401': 0, '403': 0, '404': 0, '405': 0, '500': 0}
     total = 0
     count = 0
+    pattern = re.compile(r'\S+ - \[(.*?)\] "GET /projects/260 HTTP/1\.1" (\d{3}) (\d+)')
+    
     try:
         for line in stdin:
-            splited = line.split()
-            if count % 10 == 0 and count != 0:
-                status_printer(total_size=total, status=status_codes)
-            try:
-                code = splited[-2]
-                if code in status_codes.keys():
-                    status_codes[code] = status_codes[code] + 1
-            except Exception:
-                pass
-            try:
-                total += int(splited[-1])
-            except Exception:
-                pass
-            count += 1
-        status_printer(total_size=total, status=status_codes)
+            match = pattern.search(line)
+            if match:
+                code, file_size = match.groups()[1], match.groups()[2]
+                if code in status_codes:
+                    status_codes[code] += 1
+                    total += int(file_size)
+                    count += 1
+                    
+                if count % 10 == 0:
+                    status_printer(total_size=total, status=status_codes)
+                
     except KeyboardInterrupt:
-        status_printer(total, status_codes)
+        status_printer(total_size=total, status=status_codes)
+        print("\nProgram interrupted by user.")
         raise
 
 
