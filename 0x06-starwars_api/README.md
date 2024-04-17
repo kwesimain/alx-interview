@@ -1,0 +1,1 @@
+The Star Wars API (SWAPI) is an open and free API that provides access to a vast amount of data related to the Star Wars universe. It serves as a comprehensive database containing information about various aspects of the Star Wars franchise, including films, characters, starships, vehicles, species, and more.
