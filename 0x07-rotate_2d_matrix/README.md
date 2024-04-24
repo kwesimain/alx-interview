@@ -1,0 +1,1 @@
+A 2D matrix, also known as a 2-dimensional matrix, is a rectangular array of numbers or elements arranged in rows and columns. It is a fundamental data structure in mathematics and computer science, used to represent various types of information and solve a wide range of problems.
